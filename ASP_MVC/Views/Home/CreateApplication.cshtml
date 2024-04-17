@@ -1,0 +1,32 @@
+﻿@{
+    @using ASP_MVC.Data;
+    @using ASP_MVC.Data.Models;
+}
+<div>
+    <div class="info-container">
+        <form asp-controller="Home" asp-action="CreateApp" method="post">
+            <p>Имя клиента (ФИО)</p>
+            <input type="text" name="fullname"/>
+            <p>Тип проблемы</p>
+            <select name="type">
+                @foreach (Problem problem in (List<Problem>)ViewData["Problems"])
+                {
+                    <option value="@problem.IdProblem">@problem.NameProblem</option>
+                }
+            </select>
+            <p>Исполнитель</p>
+            <select name="staff">
+                @foreach (Staff staff in (List<Staff>) ViewData["Staff"])
+                {
+                    <option value="@staff.IdStaff">@staff.Fullname</option>
+                }
+            </select>
+            <p>Устройство и модель</p>
+            <input type="text" name="equipment"/>
+            <p>Примерное время работы (в дн.)</p>
+            <input type="number" name="time"/>
+
+            <button class="btn btn-b" type="submit">Создать</button>
+        </form>
+    </div>
+</div>

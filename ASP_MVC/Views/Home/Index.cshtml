@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Авторизация";
+    @using Microsoft.AspNetCore.Authentication;
+    @using System.Security.Principal;
+}
+
+<div class="signin-panel">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>Приветствую, @User.Identity.Name</p>
+        <p></p>
+        @if (User.IsInRole("Диспетчер"))
+        {
+            <p>Вы Диспетчер</p>
+        }
+        else
+        {
+            <p>Вы Исполнитель</p>
+        }
+        <form asp-action="Logout" asp-controller="Auth">
+            <button type="submit">Выйти</button>
+        </form>
+    }
+    else
+    {
+        <div class="signin">
+            <form asp-controller="Auth" asp-action="Login" method="post">
+                <p>Логин</p>
+                <input name="login" type="text" />
+                <p>Пароль</p>
+                <input name="password" type="password" />
+
+                <button class="btn">Авторизация</button>
+            </form>
+
+        </div>
+    }
+   
+</div>

@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "CurrentApplication";
+
+@using ASP_MVC.Data;
+@using ASP_MVC.Data.Models;
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+    Application application = ViewData["CurrentApplication"] as Application;
+    var statusList = (List<Status>)ViewData["SatusList"];
+    var selectList = new SelectList(statusList, "Idstatus", "StatusName", application.Status);
+
+    var selectProblems = new SelectList((List<Problem>)ViewData["Problems"], "IdProblem", "NameProblem", application.IdProblem);
+
+    var selectStaff = new SelectList((List<Staff>)ViewData["Staff"], "IdStaff", "Fullname", application.IdStaff);
+
+    var date = application.DateAddition.Value.ToString("yyyy-MM-dd");
+    var dateend = application.DateEnd.Value.ToString("yyyy-MM-dd");
+}
+
+<div>
+    <div class="info-container">
+        <form asp-controller="Home" asp-action="UpdateApplication" method="post">
+            <p>№ Заявки</p>
+            <input name="id" readonly value="@application.IdApplication" />
+            <p>ФИО клиента</p>
+            <input name="fullname" type="text" value="@application.FullnameClient" />
+            <p>Статус</p>
+            <select name="status" asp-items="selectList"></select>
+            <p>Тип проблемы</p>
+            <select name="problem" asp-items="selectProblems"></select>
+            <p>Исполнитель</p>
+            <select name="staff" asp-items="selectStaff"></select>
+            <p>Устройство и модель</p>
+            <input name="equipment" type="text" value="@application.NameEquipment"/>
+            <p>Дата Начала</p>
+            <input name="dateAddition" readonly type="date" value="@date"/>
+            <p>Дата Окончания</p>
+            <input name="dateEnd" type="date" value="@dateend"/>
+            <button type="submit" class="btn btn-b">Изменить</button>
+        </form>
+        
+        <form asp-controller="Home" asp-action="Application" method="post">
+            <button class="btn btn-b">Отменить</button>
+        </form>
+        
+    </div>
+    
+
+</div>

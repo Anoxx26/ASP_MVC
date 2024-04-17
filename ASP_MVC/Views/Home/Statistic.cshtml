@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+@using ASP_MVC.Data;
+@using ASP_MVC.Data.Models;
+    List<ProblemModel> problems = ViewData["Results"] as List<ProblemModel>;
+}
+<div>
+    <div>
+        <p>Кол-во выполненных заявок</p>
+        <p>@ViewData["Count"]</p>
+        <p>Среднее время выполнения заявок</p>
+        <p>@ViewData["Avg"]</p>
+        <p>Статистика по типам несипрованостям</p>
+        <table class="table table-bordered">
+            <thead style="background-color:#B0E5FD;">
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Тип неиспрваности</th>
+                    <th scope="col">Общее кол-во</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in problems)
+                {
+                    <tr>
+                        <td>@item.IdProblem</td>
+                        <td>@item.ProblemName</td>
+                        <td>@item.ApplicationCount</td>
+                    </tr>
+                }
+            </tbody>
+        
+    </div>
+</div>

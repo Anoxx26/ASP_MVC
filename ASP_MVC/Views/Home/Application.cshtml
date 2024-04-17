@@ -1,0 +1,77 @@
+﻿
+@{
+    @using ASP_MVC.Data;
+    @using ASP_MVC.Data.Models;
+    ViewData["Title"] = "Application";
+}
+
+<h1>Таблица заявок</h1>
+<div class="search-cont">
+    <form asp-controller="Home" asp-action="SearchApplication" method="get">
+        <input name="searchString"/>
+        
+        <select name="type">
+            <option value="0">Все</option>
+            <option value="1">В ожидании</option>
+            <option value="2">В работе</option>
+            <option value="3">Выполнено</option>
+        </select>
+
+        <button type="submit" class="btn btn-b">Поиск</button>
+    </form>
+    
+    @if (User.IsInRole("Диспетчер"))
+    {
+        <a class="btn table-btn" href="@Url.Action("CreateApplication", "Home")">Добавить</a>
+        <a class="btn btn-b" href="@Url.Action("Statistic", "Home")">Статистика</a>
+    }
+</div>
+<table class="table table-bordered">
+    <thead style="background-color:#B0E5FD;">
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Дата конца</th>
+            <th scope="col">Имя клиента</th>
+            <th scope="col">Исполнитель</th>
+            <th scope="col">Проблема</th>
+            <th scope="col">Устройство</th>
+            <th scope="col">Статус заявки</th>
+            <th scope="col">Статус работы</th>
+            <th scope="col"></th>
+            @if (User.IsInRole("Диспетчер"))
+            {
+                <th scope="col">Удалить</th>
+            }
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Application applic in (List<Application>)ViewData["Apllications"])
+        {
+            <tr>
+                <td>@applic.IdApplication</td>
+                <td>@applic.DateAddition</td>
+                <td>@applic.DateEnd</td>
+                <td>@applic.FullnameClient</td>
+                <td>@applic.IdStaffNavigation.Fullname</td>
+                <td>@applic.IdProblemNavigation.NameProblem</td>
+                <td>@applic.NameEquipment</td>
+                <td>@applic.StatusNavigation.StatusName</td>
+                <td>@applic.WorkStatus</td>
+
+                @if (User.IsInRole("Диспетчер"))
+                {
+                    <td><a class="btn table-btn" href="@Url.Action("CurrentApplication", "Home", new { applicationId = applic.IdApplication })">Подробнее</a></td>
+                    <td><a class="btn table-btn" href="@Url.Action("DeleteApplication", "Home", new { applicationId = applic.IdApplication })">X</a></td>
+                }
+                else
+                {
+                    <td><a class="btn table-btn" href="@Url.Action("CurrentApplicationEx", "Home", new { applicationId = applic.IdApplication })">Подробнее</a></td>
+                }
+            </tr>
+        }
+        
+    </tbody>
+</table>
+
